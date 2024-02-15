@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Extract Version from flake.nix
       id: extract_version
@@ -26,12 +26,12 @@ jobs:
         RELEASE_URL=$(echo $RELEASE_DATA | jq -r '.html_url')
         echo "::set-output name=url::$RELEASE_URL"
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
 
     - name: Create Release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
       with:
         tag_name: ${{ steps.extract_version.outputs.version }}
         release_name: Release ${{ steps.extract_version.outputs.version }}

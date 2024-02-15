@@ -9,8 +9,6 @@ on:
 jobs:
   update-dfx:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
 
     steps:
     - name: Check out repository
@@ -55,7 +53,7 @@ jobs:
         git checkout -b update-dfx-$NEW_VERSION
         git add flake.nix
         git commit -m "Update DFX to version $NEW_VERSION with new SHA256 hashes"
-        git push origin update-dfx-$NEW_VERSION
+        git -c http.extraheader="AUTHORIZATION: basic $(echo -n ${{ secrets.REPO_PAT }}: | base64)" push origin update-dfx-$NEW_VERSION
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3

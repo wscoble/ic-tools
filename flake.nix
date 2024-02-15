@@ -9,10 +9,8 @@
   outputs = { self, nixpkgs, flake-utils, ... }@inputs: let
 
     version = "000";
-    shas = {
-      "x86_64-linux" = "000";
-      "x86_64-darwin" = "000";
-    };
+    shas."x86_64-linux" = "000";
+    shas."x86_64-darwin" = "000";
 
   in
     flake-utils.lib.eachDefaultSystem (system:

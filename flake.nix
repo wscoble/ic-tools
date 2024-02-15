@@ -19,8 +19,8 @@
         dfx-bin = pkgs.stdenv.mkDerivation {
           name = "dfx-${version}";
           src = pkgs.fetchurl {
-            url = "https://github.com/dfinity/sdk/releases/download/${version}/dfx-${version}-x86_64-darwin.tar.gz";
-            sha256 = shas."x86_64-darwin";
+            url = "https://github.com/dfinity/sdk/releases/download/${version}/dfx-${version}-${system}.tar.gz";
+            sha256 = shas."${system}";
           };
           buildInputs = [ pkgs.makeWrapper ];
           installPhase = ''

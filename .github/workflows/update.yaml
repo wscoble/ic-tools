@@ -9,13 +9,15 @@ on:
 jobs:
   update-dfx:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Setup Nix
-      uses: cachix/install-nix-action@v14
+      uses: cachix/install-nix-action@v25
       with:
         install_options: '--daemon'
 

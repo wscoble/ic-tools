@@ -12,13 +12,11 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-    - uses: actions/checkout@v4
-
     - name: Setup Nix
       uses: cachix/install-nix-action@v25
 
     - name: Install Flake
-      run: nix flake check
+      run: nix profile install github:wscoble/ic-tools
 
     - name: Test DFX Executable
       run: |

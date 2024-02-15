@@ -4,10 +4,6 @@ This repository hosts a Nix flake for the Internet Computer (IC) toolchain, focu
 
 Ah, I see! You're referring to using `devenv.sh`, a tool for managing project-specific development environments defined by declarative configurations. Given this clarification, let's revise the section to incorporate `devenv.sh` from [devenv.sh](https://devenv.sh/packages/) as a method for setting up and using the development environment for your Nix flake project.
 
-### Updated Installation and Usage Section with `devenv.sh`
-
----
-
 ## Installation and Usage
 
 ### Setting Up with Nix

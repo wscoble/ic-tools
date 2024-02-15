@@ -8,7 +8,7 @@
 
   outputs = { self, nixpkgs, flake-utils, ... }@inputs: let
 
-    version = "000";
+    version = "0.17.0";
     shas = {
       "x86_64-linux" = "000";
       "x86_64-darwin" = "000";

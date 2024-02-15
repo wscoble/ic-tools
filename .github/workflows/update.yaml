@@ -1,0 +1,64 @@
+name: Update DFX Version and Hashes
+
+on:
+  schedule:
+    # Run at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-dfx:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Setup Nix
+      uses: cachix/install-nix-action@v14
+      with:
+        install_options: '--daemon'
+
+    - name: Check for new DFX release
+      id: check-version
+      run: |
+        LATEST_VERSION=$(curl -s https://api.github.com/repos/dfinity/sdk/releases/latest | jq -r '.tag_name')
+        echo "Latest version: $LATEST_VERSION"
+        echo "::set-output name=version::$LATEST_VERSION"
+
+    - name: Fetch SHA256 for x86_64-linux
+      id: sha-linux
+      run: |
+        SHA_URL="https://github.com/dfinity/sdk/releases/download/${{ steps.check-version.outputs.version }}/dfx-${{ steps.check-version.outputs.version }}-x86_64-linux.tar.gz.sha256"
+        SHA256_LINUX=$(curl -sL $SHA_URL | awk '{print $1}')
+        echo "::set-output name=sha::$SHA256_LINUX"
+
+    - name: Fetch SHA256 for x86_64-darwin
+      id: sha-darwin
+      run: |
+        SHA_URL="https://github.com/dfinity/sdk/releases/download/${{ steps.check-version.outputs.version }}/dfx-${{ steps.check-version.outputs.version }}-x86_64-darwin.tar.gz.sha256"
+        SHA256_DARWIN=$(curl -sL $SHA_URL | awk '{print $1}')
+        echo "::set-output name=sha::$SHA256_DARWIN"
+
+    - name: Update flake.nix with the new version and SHA256 hashes
+      run: |
+        NEW_VERSION=${{ steps.check-version.outputs.version }}
+        SHA_LINUX=${{ steps.sha-linux.outputs.sha }}
+        SHA_DARWIN=${{ steps.sha-darwin.outputs.sha }}
+        sed -i "s/version = \".*\"/version = \"$NEW_VERSION\"/" flake.nix
+        sed -i "s/shas.\"x86_64-linux\" = \".*\"/shas.\"x86_64-linux\" = \"$SHA_LINUX\"/" flake.nix
+        sed -i "s/shas.\"x86_64-darwin\" = \".*\"/shas.\"x86_64-darwin\" = \"$SHA_DARWIN\"/" flake.nix
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git checkout -b update-dfx-$NEW_VERSION
+        git add flake.nix
+        git commit -m "Update DFX to version $NEW_VERSION with new SHA256 hashes"
+        git push origin update-dfx-$NEW_VERSION
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        branch: update-dfx-${{ steps.check-version.outputs.version }}
+        title: "Update DFX to version ${{ steps.check-version.outputs.version }} with new SHA256 hashes"
+        body: |
+          Automatically update DFX version to ${{ steps.check-version.outputs.version }} and update SHA256 hashes.

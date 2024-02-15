@@ -48,9 +48,6 @@ jobs:
         sed -i "s/version = \".*\"/version = \"$NEW_VERSION\"/" flake.nix
         sed -i "s/shas.\"x86_64-linux\" = \".*\"/shas.\"x86_64-linux\" = \"$SHA_LINUX\"/" flake.nix
         sed -i "s/shas.\"x86_64-darwin\" = \".*\"/shas.\"x86_64-darwin\" = \"$SHA_DARWIN\"/" flake.nix
-        git config --global user.name 'github-actions'
-        git config --global user.email 'github-actions@github.com'
-        git checkout -b update-dfx-$NEW_VERSION
         git add flake.nix
 
     - name: Create Pull Request

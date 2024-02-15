@@ -14,18 +14,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Extract Version from flake.nix
-      id: extract_version
-      run: |
-        VERSION=$(grep -oP 'version = "\K[0-9.]+(?=")' flake.nix)
-        echo "Extracted version: $VERSION"
-        echo "::set-output name=version::$VERSION"
-
     - name: Setup Nix
       uses: cachix/install-nix-action@v25
 
     - name: Install Flake
-      run: nix profile install github:wscoble/ic-tools#${{ steps.extract_version.outputs.version }}
+      run: nix profile install
 
     - name: Test DFX Executable
       run: |

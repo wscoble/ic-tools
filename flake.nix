@@ -20,12 +20,15 @@
           name = "dfx-${version}";
           src = pkgs.fetchurl {
             url = "https://github.com/dfinity/sdk/releases/download/${version}/dfx-${version}-x86_64-darwin.tar.gz";
-            sha256 = shas."x86_64-darwin";
+            sha256 = shas."${system}";
           };
           buildInputs = [ pkgs.makeWrapper ];
+          unpackPhase = ''
+            tar -zxf $src
+          '';
           installPhase = ''
             mkdir -p $out/bin
-            tar -xzf $src -C $out/bin
+            tar -zxf $src -C $out/bin
             
             # Rename the dfx binary to dfx-wrapped
             mv $out/bin/dfx $out/bin/dfx-wrapped
@@ -35,12 +38,13 @@
             chmod +x $out/bin/dfx
             
             # Use makeWrapper to adjust the wrapper, ensuring it calls dfx-wrapped
-            wrapProgram $out/bin/dfx --add-flags "$out/bin/dfx-wrapped"
+            # wrapProgram $out/bin/dfx --add-flags "$out/bin/dfx-wrapped"
           '';
         };
       in {
         devShell = pkgs.mkShell {
           buildInputs = [ dfx-bin ];
         };
+        defaultPackage = dfx-bin;
       });
 }

@@ -4,7 +4,7 @@
 ARCH="$(uname -m)"
 
 # Path to the dfx-wrapped binary
-DFX_BIN="$out/bin/dfx-wrapped"
+DFX_BIN="dfx-wrapped"
 
 if [[ "$ARCH" == "arm64" ]]; then
   # If we're on Apple Silicon, use Rosetta to run the dfx-wrapped binary

@@ -52,8 +52,6 @@ jobs:
         git config --global user.email 'github-actions@github.com'
         git checkout -b update-dfx-$NEW_VERSION
         git add flake.nix
-        git commit -m "Update DFX to version $NEW_VERSION with new SHA256 hashes"
-        git push https://${{ secrets.REPO_PAT }}@github.com/wscoble/ic-tools.git update-dfx-$NEW_VERSION
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v6

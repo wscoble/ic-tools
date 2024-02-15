@@ -58,6 +58,7 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v6
       with:
+        base: main
         branch: update-dfx-${{ steps.check-version.outputs.version }}
         title: "Update DFX to version ${{ steps.check-version.outputs.version }} with new SHA256 hashes"
         body: |

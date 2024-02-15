@@ -8,9 +8,9 @@
 
   outputs = { self, nixpkgs, flake-utils, ... }@inputs: let
 
-    version = "000";
-    shas."x86_64-linux" = "000";
-    shas."x86_64-darwin" = "000";
+    version = "0.17.0";
+    shas."x86_64-linux" = "15346005975c4183d5da6e3a4ea828e58b76d65c0e57bdbe0edbc42a4536a465";
+    shas."x86_64-darwin" = "9d1dd243cec8fa26fe3f4eec0d86950435cba6ca29d6afd09b86097fd5def318";
 
   in
     flake-utils.lib.eachDefaultSystem (system:
@@ -19,7 +19,7 @@
         dfx-bin = pkgs.stdenv.mkDerivation {
           name = "dfx-${version}";
           src = pkgs.fetchurl {
-            url = "https://github.com/dfinity/sdk/releases/download/${version}/dfx-${version}-x86_64-darwin.tar.gz";
+            url = "https://github.com/dfinity/sdk/releases/download/${version}/dfx-${version}-${system}.tar.gz";
             sha256 = shas."${system}";
           };
           buildInputs = [ pkgs.makeWrapper ];

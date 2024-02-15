@@ -1,6 +1,3 @@
-Certainly! Below is a template for a README file for your repository. Since I don't have specifics about your project beyond the use of `dfx` and Nix flakes, I'll keep it general; please adjust the content to fit your project's details more closely.
-
-```markdown
 # IC Tools Flake
 
 This repository hosts a Nix flake for the Internet Computer (IC) toolchain, focusing on providing a reproducible development environment with `dfx`, the command-line tool for developing, deploying, and managing Internet Computer projects.

@@ -1,0 +1,43 @@
+name: Create Release with DFX Source Link
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Extract Version from flake.nix
+      id: extract_version
+      run: |
+        VERSION=$(grep -oP 'version = "\K[0-9.]+(?=")' flake.nix)
+        echo "Extracted version: $VERSION"
+        echo "::set-output name=version::$VERSION"
+
+    - name: Fetch DFX Release URL
+      id: fetch-release-url
+      run: |
+        VERSION=${{ steps.extract_version.outputs.version }}
+        RELEASE_DATA=$(curl -s https://api.github.com/repos/dfinity/sdk/releases/tags/$VERSION)
+        RELEASE_URL=$(echo $RELEASE_DATA | jq -r '.html_url')
+        echo "::set-output name=url::$RELEASE_URL"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.extract_version.outputs.version }}
+        release_name: Release ${{ steps.extract_version.outputs.version }}
+        body: |
+          Update to DFX version ${{ steps.extract_version.outputs.version }}.
+
+          For more details, see the [DFX Release](${{ steps.fetch-release-url.outputs.url }}) on GitHub.
+        draft: false
+        prerelease: false

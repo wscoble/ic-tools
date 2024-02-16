@@ -81,7 +81,7 @@ While efforts are made to support Apple Silicon through Rosetta 2, direct testin
 
 ## License
 
-This project is licensed under the [CC0 1.0 Universal License](LICENSE).
+This project is licensed under the [Apache License](LICENSE).
 
 ## Acknowledgments
 

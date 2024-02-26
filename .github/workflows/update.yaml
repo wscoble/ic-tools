@@ -53,6 +53,7 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v6
       with:
+        branch: create-pull-request/dfinity-sdk-${{ steps.check-version.outputs.version }}
         title: "Update DFX to version ${{ steps.check-version.outputs.version }} with new SHA256 hashes"
         body: |
           Automatically update DFX version to ${{ steps.check-version.outputs.version }} and update SHA256 hashes.

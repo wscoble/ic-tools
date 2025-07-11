@@ -7,9 +7,9 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, ... }@inputs: let
-    version = "0.25.1";
-    shas."x86_64-linux" = "1e2118e0463aa44fed3a5dee8d638144c67e7b6ee8e0beaf75cfd56687bdb7e7";
-    shas."x86_64-darwin" = "4a8ae1e0739b08321bc986f92c13f0078167b3752a35152550c480f33886b54b";
+    version = "0.28.0";
+    shas."x86_64-linux" = "4649f1edd1e67f816f7d1bc40992038a4315a2cc1d567e9345fd8b9c60ad29e4";
+    shas."x86_64-darwin" = "f93f31c621b467ed13ba153309b9736c284476b690016e9dd49f3aa8fb6793a4";
   in
     flake-utils.lib.eachDefaultSystem (system:
       let
